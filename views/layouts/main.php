@@ -8,6 +8,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use \izumi\longpoll\widgets\LongPoll;
+use \lo\modules\noty\Wrapper;
 
 AppAsset::register($this);
 ?>
@@ -16,6 +18,9 @@ AppAsset::register($this);
 <?php
 $user = \Yii::$app->user;
 $auth = \Yii::$app->authManager;
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -29,6 +34,24 @@ $auth = \Yii::$app->authManager;
     <?php $this->head() ?>
 </head>
 <body>
+<?php
+LongPoll::widget([
+    'url' => ['notification/polling'],
+    'events' => ['checkNew'],
+    'callback' => 'function(data){
+        console.log(data);
+        var item = null;
+        for(key in data){
+            item = data[key];
+            toastr.success("New " + item.model + ": " + item.item_id);
+        }
+    }',
+]);
+
+echo Wrapper::widget([
+    'layerClass' => 'lo\modules\noty\layers\Toastr',
+]);
+?>
 <?php $this->beginBody() ?>
 
 <div class="wrap">

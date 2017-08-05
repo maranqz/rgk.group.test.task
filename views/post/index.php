@@ -26,7 +26,7 @@ $user = \Yii::$app->user;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
+    <div class="pull-left">
         <?= $user->can('createPost') ? \yii\bootstrap\Modal::widget([
             'id' => 'postCreate-modal',
             'toggleButton' => [
@@ -39,7 +39,19 @@ $user = \Yii::$app->user;
             'size' => \yii\bootstrap\Modal::SIZE_LARGE,
             'clientEvents' => $eventModal
         ]) : '' ?>
-    </p>
+    </div>
+    <div class="pull-right">
+        <?= \yii\bootstrap\Html::activeDropDownList(
+            $searchModel,
+            'page_size',
+            [10 => 10, 20 => 20, 30 => 30, 50 => 50, 100 => 100],
+            [
+                'class' => 'form-control',
+                'value' => $dataProvider->pagination->pageSize
+            ]
+        ); ?>
+    </div>
+    <div class="clearfix"></div>
     <?php Pjax::begin([
         'id' => $pjaxId,
         'formSelector' => '#postIndex form[data-pjax]:not(#postForm form[data-pjax])',
@@ -51,6 +63,7 @@ $user = \Yii::$app->user;
         'filterUrl' => '/post/index?' . \Yii::$app->request->getQueryString(),
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterSelector' => 'select[name*="page_size"]',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -67,11 +80,6 @@ $user = \Yii::$app->user;
                     $title = 'Not active';
                     $class = 'btn-danger';
                     $confirm = 'Are you sure you want to active this post?';
-                    $options = [
-                        'class' => 'btn btn-xs btn-block ' . $class,
-                        'data-pjax' => '#postIndex',
-                        'data-confirm' => $confirm,
-                    ];
 
 
                     $filterParams['item_id'] = $model->id;
@@ -99,10 +107,10 @@ $user = \Yii::$app->user;
                     'convertFormat' => true,
                     'pluginOptions' => [
                         'format' => \Yii::$app->formatter->datetimeFormat,
-                        'timePicker'=>true,
-                        'timePickerIncrement'=>15,
+                        'timePicker' => true,
+                        'timePickerIncrement' => 15,
                         'locale' => [
-                            'format'=>'Y-m-d h:i A',
+                            'format' => 'Y-m-d h:i A',
                             'separator' => \app\models\Post::DATE_SEPARATE,
                         ],
                     ]
@@ -111,6 +119,7 @@ $user = \Yii::$app->user;
 
             [
                 'class' => 'yii\grid\ActionColumn',
+                'template' => ($user->can('updatePost') ? '{view} ' : '') . '{update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model, $id) use ($eventModal) {
                         return \yii\bootstrap\Modal::widget([
@@ -126,6 +135,14 @@ $user = \Yii::$app->user;
                             'clientEvents' => $eventModal
                         ]);
                     },
+                ],
+                'visibleButtons' => [
+                    'update' => function ($model, $key, $index) use ($user) {
+                        return $user->can('updatePost') || $user->can('updateOwnPost', ['model' => $model]) ? true : false;
+                    },
+                    'delete' => function ($model, $key, $index) use ($user) {
+                        return $user->can('deletePost') || $user->can('deleteOwnPost', ['model' => $model]) ? true : false;
+                    }
                 ]
             ],
         ],

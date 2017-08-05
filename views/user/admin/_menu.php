@@ -11,6 +11,7 @@
 
 use yii\bootstrap\Nav;
 
+$eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
 ?>
 
 <?= Nav::widget([
@@ -32,14 +33,7 @@ use yii\bootstrap\Nav;
                 'href' => \yii\helpers\Url::to(['/user/admin/create']),
             ],
             'size' => \yii\bootstrap\Modal::SIZE_LARGE,
-            'clientEvents' => [
-                'show.bs.modal' => new \yii\web\JsExpression("
-                    function(e){
-                        var target = e.target;
-                        $('.modal-content', $(target)).load($(e.relatedTarget).attr('href'));
-                    }
-                "),
-            ]
+            'clientEvents' => $eventModal
         ]).'</li>',
     ],
 ]) ?>

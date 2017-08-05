@@ -15,7 +15,7 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
-
+use \kartik\daterange\DateRangePicker;
 
 /**
  * @var \yii\web\View $this
@@ -26,6 +26,8 @@ use yii\bootstrap\Modal;
 
 $this->title = Yii::t('user', 'Manage users');
 $this->params['breadcrumbs'][] = $this->title;
+
+$eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
@@ -71,10 +73,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $searchModel,
                 'attribute' => 'created_at',
                 'convertFormat' => true,
-                'type' => \kartik\datetime\DateTimePicker::TYPE_INPUT,
                 'pluginOptions' => [
-                    'autoclose' => true,
                     'format' => \Yii::$app->formatter->datetimeFormat,
+                    'singleDatePicker' => true,
+                    'locale' => [
+                        'format' => 'Y-m-d h:i A',
+                        'separator' => \app\models\Post::DATE_SEPARATE,
+                    ],
                 ]
             ]),
         ],
@@ -91,14 +96,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             },
             'attribute' => 'last_login_at',
-            'filter' => DateTimePicker::widget([
+            'filter' => DateRangePicker::widget([
                 'model' => $searchModel,
                 'attribute' => 'last_login_at',
                 'convertFormat' => true,
-                'type' => \kartik\datetime\DateTimePicker::TYPE_INPUT,
                 'pluginOptions' => [
-                    'autoclose' => true,
                     'format' => \Yii::$app->formatter->datetimeFormat,
+                    'singleDatePicker' => true,
+                    'locale' => [
+                        'format' => 'Y-m-d h:i A',
+                        'separator' => \app\models\Post::DATE_SEPARATE,
+                    ],
                 ]
             ]),
         ],
@@ -144,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'yii\grid\ActionColumn',
             'template' => '{switch} {resend_password} {update} {delete}',
             'buttons' => [
-                'update' => function ($url, $model, $key) {
+                'update' => function ($url, $model, $key) use ($eventModal) {
                     $title = Yii::t('yii', 'Update');
                     return Modal::widget([
                         'id' => 'adminUpdate-modal',
@@ -156,39 +164,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'href' => $url,
                         ],
                         'size' => Modal::SIZE_LARGE,
-                        'clientEvents' => [
-                            'show.bs.modal' => new \yii\web\JsExpression("
-                                function(e){
-                                    var target = e.target;
-                                    $('.modal-content', $(target)).load($(e.relatedTarget).attr('href')/*, function(){
-                                        target.setAttribute('backHref', window.location.pathname + window.location.search);
-                                        target.setAttribute('beforeSend', function(xhr, options) {
-                                          console.log(xhr, options);
-                                        });                                        
-                                        $('#adminUpdate', target).on('pjax:beforeSend', target.getAttribute('beforeSend'));
-                                    }*/);
-                                }
-                            "),
-                            /*'hide.bs.modal' => new \yii\web\JsExpression("
-                                function(e){
-                                    var target = e.target;
-                                    console.log(target.getAttribute('backHref'), e);
-                                    $('#adminUpdate', target).on('pjax:beforeSend', target.getAttribute('beforeSend'));
-                                    delete target.getAttribute('beforeSend');
-                                    delete target.getAttribute('backHref');
-                                }
-                            "),*/
-                        ]
+                        'clientEvents' => $eventModal
                     ]);
-                    /*return Html::a(
-                        Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]),
-                        $url,
-                        [
-                            'title' => $title,
-                            'aria-label' => $title,
-                            'data-pjax' => '0'
-                        ]
-                    );*/
                 },
 
                 'resend_password' => function ($url, $model, $key) {

@@ -26,5 +26,8 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# dir for uploaded files
+/web/uploads
+
 tests/_output/*
 tests/_support/_generated

@@ -7,6 +7,11 @@ use yii\console\Controller;
 
 class RbacController extends Controller
 {
+
+    const USER_USER = 'user';
+    const MANAGER_USER = 'manager';
+    const ADMIN_USER = 'maranqz';
+
     public function actionInit()
     {
         $auth = Yii::$app->authManager;
@@ -66,7 +71,6 @@ class RbacController extends Controller
         $auth->addChild($deleteOwnPost, $deletePost);
 
 
-
         // add role "guest"
         $guest = $auth->createRole('guest');
         $auth->add($guest);
@@ -94,8 +98,8 @@ class RbacController extends Controller
         $auth->addChild($admin, $manager);
 
         // Assign roles to users
-        $auth->assign($user, User::findOne(['username' => 'user'])->id);
-        $auth->assign($manager, User::findOne(['username' => 'manager'])->id);
-        $auth->assign($admin, User::findOne(['username' => 'maranqz'])->id);
+        $auth->assign($user, User::findOne(['username' => self::USER_USER])->id);
+        $auth->assign($manager, User::findOne(['username' => self::MANAGER_USER])->id);
+        $auth->assign($admin, User::findOne(['username' => self::ADMIN_USER])->id);
     }
 }

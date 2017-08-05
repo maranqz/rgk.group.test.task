@@ -88,6 +88,7 @@ $config = [
             'modelMap' => [
                 'User' => '\app\models\user\User',
                 'UserSearch' => '\app\models\user\UserSearch',
+                'Profile' => '\app\models\user\Profile',
             ],
             'controllerMap' => [
                 'registration' => '\app\controllers\user\RegistrationController',//::className(),
@@ -96,6 +97,9 @@ $config = [
             'components' => [
 
             ],
+        ],
+        'noty' => [
+            'class' => 'lo\modules\noty\Module',
         ],
     ],
     'params' => $params,

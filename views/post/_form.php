@@ -24,7 +24,9 @@ use \app\models\Post;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'img')->textInput(['maxlength' => true]) ?>
+    <?= !empty($model->img) ? Html::img(\Yii::getAlias('@web') . $model->img, ['class' => 'image']) : '' ?>
+
+    <?= $form->field($model, 'img_file')->fileInput([]) ?>
 
     <?= $form->field($model, 'active')->dropDownList(Post::STATUS_LIST) ?>
 

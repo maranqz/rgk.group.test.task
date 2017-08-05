@@ -9,9 +9,13 @@ use app\models\Post;
 
 /**
  * PostSearch represents the model behind the search form about `app\models\Post`.
+ *
+ * @property int $page_size
  */
 class PostSearch extends Post
 {
+    public $page_size;
+
     /**
      * @inheritdoc
      */
@@ -19,6 +23,7 @@ class PostSearch extends Post
     {
         return [
             [['id', 'active'], 'integer'],
+            [['page_size'], 'integer', 'min' => 1, 'max' => 100],
             [['title', 'preview', 'description', 'img'], 'safe'],
             ['created_at', 'string']
         ];
@@ -57,6 +62,8 @@ class PostSearch extends Post
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $dataProvider->pagination->pageSize = $this->page_size ? $this->page_size : $dataProvider->pagination->pageSize;
 
         if (!empty($this->created_at)) {
             list($dateFrom, $dateTo) = explode(Post::DATE_SEPARATE, $this->created_at);

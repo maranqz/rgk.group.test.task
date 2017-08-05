@@ -38,6 +38,8 @@ use yii\helpers\Html;
 <?= $form->field($profile, 'website') ?>
 <?= $form->field($profile, 'location') ?>
 <?= $form->field($profile, 'gravatar_email') ?>
+<?= $form->field($profile, 'notification_email')->dropDownList(['0'=>'Нет', '1' => 'Да']) ?>
+<?= $form->field($profile, 'notification_browser')->dropDownList(['0'=>'Нет', '1' => 'Да']) ?>
 <?= $form->field($profile, 'bio')->textarea() ?>
 
 <div class="form-group">

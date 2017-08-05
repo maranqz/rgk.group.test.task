@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\user\User;
+use izumi\longpoll\Event;
 use Yii;
 use app\models\Post;
 use app\models\PostSearch;
@@ -144,6 +146,7 @@ class PostController extends BaseController
         $this->performAjaxValidation($model);
 
         $this->trigger(self::EVENT_BEFORE_UPDATE, $event);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->trigger(self::EVENT_AFTER_UPDATE, $event);
         }

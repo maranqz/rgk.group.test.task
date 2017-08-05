@@ -32,7 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'preview',
             'description:ntext',
-            'img',
+            [
+                'attribute' => 'img',
+                'format'=> 'raw',
+                'value' => function ($model) {
+                    return Html::img('@web' . $model->img, ['class' => 'image']);
+                }
+            ],
             'active',
             'created_at',
         ],
