@@ -8,21 +8,14 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use \app\assets\ToastrAsset;
 use \izumi\longpoll\widgets\LongPoll;
-use \lo\modules\noty\Wrapper;
 
 AppAsset::register($this);
+ToastrAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 
-<?php
-$user = \Yii::$app->user;
-$auth = \Yii::$app->authManager;
-
-
-
-
-?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -35,10 +28,15 @@ $auth = \Yii::$app->authManager;
 </head>
 <body>
 <?php
-LongPoll::widget([
-    'url' => ['notification/polling'],
-    'events' => ['checkNew'],
-    'callback' => 'function(data){
+
+//Init browser Notification
+/* @var $user app\models\user\User */
+$user = \Yii::$app->user->identity;
+if (!\Yii::$app->user->isGuest && $user->profile->notification_browser) {
+    LongPoll::widget([
+        'url' => ['/notification/polling'],
+        'events' => ['checkNew'],
+        'callback' => 'function(data){
         console.log(data);
         var item = null;
         for(key in data){
@@ -46,11 +44,8 @@ LongPoll::widget([
             toastr.success("New " + item.model + ": " + item.item_id);
         }
     }',
-]);
-
-echo Wrapper::widget([
-    'layerClass' => 'lo\modules\noty\layers\Toastr',
-]);
+    ]);
+}
 ?>
 <?php $this->beginBody() ?>
 
@@ -67,14 +62,14 @@ echo Wrapper::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ///user/admin/index
+            !Yii::$app->user->isGuest ? (
+            ['label' => 'Profile', 'url' => ['/user/settings/profile']]
+            ) : '',
             Yii::$app->user->identity->isAdmin ? (
-                ['label' => 'Users', 'url' => ['/user/admin/index']]
+            ['label' => 'Users', 'url' => ['/user/admin/index']]
             ) : '',
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/user/security/login']]
+            ['label' => 'Login', 'url' => ['/user/security/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/user/security/logout'], 'post')

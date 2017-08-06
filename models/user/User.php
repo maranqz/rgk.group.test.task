@@ -2,6 +2,12 @@
 
 namespace app\models\user;
 
+/**
+ * Class User
+ * @package app\models\user
+ *
+ * @property Profile $profile
+ */
 class User extends \dektrium\user\models\User
 {
 

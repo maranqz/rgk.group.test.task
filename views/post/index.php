@@ -76,7 +76,7 @@ $user = \Yii::$app->user;
             [
                 'attribute' => 'active',
                 'filter' => \app\models\Post::STATUS_LIST,
-                'value' => function ($model) use ($filterParams) {
+                'value' => function ($model) use ($filterParams, $user) {
                     $title = 'Not active';
                     $class = 'btn-danger';
                     $confirm = 'Are you sure you want to active this post?';
@@ -90,17 +90,27 @@ $user = \Yii::$app->user;
                         $confirm = 'Are you sure you want to deactivate this post?';
                     }
 
-                    return Html::a($title, $filterParams, [
-                        'class' => 'btn btn-xs btn-block ' . $class,
-                        'data-pjax' => '#postIndex',
-                        'data-confirm' => $confirm,
-                    ]);
+                    $options = [
+                            'class' => 'disabled '
+                    ];
+
+                    if ($user->can('updatePost') || $user->can('updateOwnPost', ['model' => $model])) {
+                        $options = [
+                            'data-pjax' => '#postIndex',
+                            'data-confirm' => $confirm,
+                        ];
+                    }
+
+                    $options['class'] .= 'btn btn-xs btn-block ' . $class;;
+
+                    return Html::a($title, $filterParams, $options);
                 },
                 'format' => 'raw',
             ],
             [
                 'attribute' => 'created_at',
                 'format' => 'datetime',
+                'filterOptions' => ['class' => 'daterangepicker-parent'],
                 'filter' => DateRangePicker::widget([
                     'model' => $searchModel,
                     'attribute' => 'created_at',
@@ -113,10 +123,10 @@ $user = \Yii::$app->user;
                             'format' => 'Y-m-d h:i A',
                             'separator' => \app\models\Post::DATE_SEPARATE,
                         ],
+                        'parentEl' => "td:has(#postsearch-created_at)",
                     ]
                 ]),
             ],
-
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => ($user->can('updatePost') ? '{view} ' : '') . '{update} {delete}',

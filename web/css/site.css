@@ -117,3 +117,7 @@ a.desc:after {
 .image {
     max-height: 100px;
 }
+
+.daterangepicker-parent{
+    position: relative;
+}

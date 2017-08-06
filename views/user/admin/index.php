@@ -62,6 +62,7 @@ $eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
         ],
         [
             'attribute' => 'created_at',
+            'filterOptions' => ['class' => 'daterangepicker-parent'],
             'value' => function ($model) {
                 if (extension_loaded('intl')) {
                     return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [$model->created_at]);
@@ -80,12 +81,14 @@ $eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
                         'format' => 'Y-m-d h:i A',
                         'separator' => \app\models\Post::DATE_SEPARATE,
                     ],
+                    'parentEl' => "td:has(#usersearch-created_at)",
                 ]
             ]),
         ],
 
         [
-            /*'attribute' => 'last_login_at',*/
+            'attribute' => 'last_login_at',
+            'filterOptions' => ['class' => 'daterangepicker-parent'],
             'value' => function ($model) {
                 if (!$model->last_login_at || $model->last_login_at == 0) {
                     return Yii::t('user', 'Never');
@@ -95,7 +98,6 @@ $eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
                     return date('Y-m-d G:i:s', $model->last_login_at);
                 }
             },
-            'attribute' => 'last_login_at',
             'filter' => DateRangePicker::widget([
                 'model' => $searchModel,
                 'attribute' => 'last_login_at',
@@ -107,6 +109,7 @@ $eventModal = \Yii::$app->params['modalEventPjax']('adminIndex');
                         'format' => 'Y-m-d h:i A',
                         'separator' => \app\models\Post::DATE_SEPARATE,
                     ],
+                    'parentEl' => 'td:has(#usersearch-last_login_at)',
                 ]
             ]),
         ],

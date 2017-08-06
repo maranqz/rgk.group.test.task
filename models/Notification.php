@@ -84,9 +84,13 @@ class Notification extends \yii\db\ActiveRecord
         if ($insert) {
             Event::triggerByKey('checkNew');
 
+            Notification::updateAll(['used' => 1], ['AND', ['used' => 0], ['!=', 'id', $this->id]]);
+
             $users = User::find()->select('{{%user}}.email')->where(['blocked_at' => null])
                 ->innerJoin('{{%profile}}', '{{%user}}.id = {{%profile}}.user_id')
-                ->where(['{{%profile}}.notification_email' => 1])->all();
+                ->where(['{{%profile}}.notification_email' => 1])
+                ->andWhere(['not', ['{{%user}}.confirmed_at' => null]])
+                ->andWhere(['!=', '{{%user}}.id', $this->created_by])->all();
 
             foreach ($users as $user) {
                 $this->sendMessage(
@@ -100,7 +104,6 @@ class Notification extends \yii\db\ActiveRecord
                 );
             }
 
-            Notification::updateAll(['used' => 1], ['AND', ['used' => 0], ['!=', 'id', $this->id]]);
 
             $this->save();
         }

@@ -6,6 +6,9 @@ $db = require(__DIR__ . '/db.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'aliases' => [
+        '@bower' => '@vendor/bower',
+    ],
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -17,6 +20,14 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['guest'],
+        ],
+
+        'assetManager' => [
+            'bundles' => [
+                'toastrAsset' => [
+                    'class' => 'app\assets\ToastrAsset',
+                ],
+            ],
         ],
 
 
@@ -52,18 +63,12 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-
-            ],
         ],
 
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    //'@vendor\dektrium\user\views' => '@app\views\user',@vendor').'\dektrium\yii2-user\views
-                    //'@vendor\dektrium\yii2-user\views' => '@app\views\user\admin',
                     '@vendor/dektrium/yii2-user/views' => '@app/views/user',
-                    '\dektrium\user\views\admin' => '@app\views\user\admin'
                 ],
             ],
         ],
@@ -94,12 +99,6 @@ $config = [
                 'registration' => '\app\controllers\user\RegistrationController',//::className(),
                 'admin' => '\app\controllers\user\AdminController'//::className(),
             ],
-            'components' => [
-
-            ],
-        ],
-        'noty' => [
-            'class' => 'lo\modules\noty\Module',
         ],
     ],
     'params' => $params,

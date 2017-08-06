@@ -7,11 +7,13 @@ use \app\models\Post;
 /* @var $this yii\web\View */
 /* @var $model app\models\Post */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $action array*/
 ?>
 
 <div class="post-form">
 
     <?php $form = ActiveForm::begin([
+        'action' => $action,
         'enableAjaxValidation' => true,//true
         'enableClientValidation' => false,//false
         'id' => 'postForm-' . time(),
@@ -26,7 +28,7 @@ use \app\models\Post;
 
     <?= !empty($model->img) ? Html::img(\Yii::getAlias('@web') . $model->img, ['class' => 'image']) : '' ?>
 
-    <?= $form->field($model, 'img_file')->fileInput([]) ?>
+    <?= $form->field($model, 'img_file')->fileInput(['accept' => 'image/jpeg, image/png, image/gif']) ?>
 
     <?= $form->field($model, 'active')->dropDownList(Post::STATUS_LIST) ?>
 

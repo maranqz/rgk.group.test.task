@@ -30,7 +30,7 @@ class Post extends \yii\db\ActiveRecord
         Post::STATUS_ACTIVE => 'Active'
     ];
 
-    const UPLOADS_DIR = DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+    const UPLOADS_DIR = '/' . 'uploads' . '/';
 
     const DATE_SEPARATE = ' - ';
 
@@ -138,12 +138,15 @@ class Post extends \yii\db\ActiveRecord
 
         try {
 
-
             $this->img_file = UploadedFile::getInstance($this, 'img_file');
+
             if (!empty($this->img_file)) {
                 $dir = Post::UPLOADS_DIR . $this->id . '.' . $this->img_file->extension;
-                $this->img_file->saveAs(\Yii::getAlias('@webroot') . $dir);
+                if(!($this->validate(['img_file']) && $this->img_file->saveAs(\Yii::getAlias('@webroot') . $dir))){
+                    return false;
+                }
                 $this->img_file = null;
+
                 $this->img = $dir;
             }
 

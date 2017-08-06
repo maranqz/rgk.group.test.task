@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8559e469c61c5d473bb1a76961b52b41",
+    "content-hash": "493d02026da8791236a5684effb72117",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -597,65 +597,6 @@
                 "yii2"
             ],
             "time": "2017-02-22T05:58:53+00:00"
-        },
-        {
-            "name": "loveorigami/yii2-notification-wrapper",
-            "version": "6.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/loveorigami/yii2-notification-wrapper.git",
-                "reference": "b16059e46dae703408bf9cf4903e04c4a9f4da3a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/loveorigami/yii2-notification-wrapper/zipball/b16059e46dae703408bf9cf4903e04c4a9f4da3a",
-                "reference": "b16059e46dae703408bf9cf4903e04c4a9f4da3a",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "~2"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "bootstrap": "lo\\modules\\noty\\Bootstrap"
-            },
-            "autoload": {
-                "psr-4": {
-                    "lo\\modules\\noty\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andrey Lukyanov",
-                    "email": "loveorigami@mail.ru",
-                    "homepage": "http://loveorigami.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "This module for renders a message from session flash (with ajax, pjax support and etc.)",
-            "homepage": "https://github.com/loveorigami/yii2-notification-wrapper",
-            "keywords": [
-                "alert",
-                "flash",
-                "growl",
-                "lobibox",
-                "module",
-                "notific8",
-                "notification",
-                "noty",
-                "notyfy",
-                "notyjs",
-                "pnotyfy",
-                "sweetalert",
-                "toast",
-                "toastr",
-                "yii2"
-            ],
-            "time": "2016-03-31T00:00:00+00:00"
         },
         {
             "name": "npm-asset/jquery-longpoll-client",

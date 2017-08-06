@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Notification;
 use izumi\longpoll\Server;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class NotificationController extends Controller
@@ -15,6 +16,26 @@ class NotificationController extends Controller
                 'class' => 'izumi\longpoll\LongPollAction',
                 'events' => ['checkNew'],
                 'callback' => [$this, 'checkNewCallback'],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['polling'],
+                        'allow' => true,
+                        'roles' => ['user'],
+                    ],
+                ],
+
             ],
         ];
     }

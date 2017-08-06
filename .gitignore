@@ -28,6 +28,8 @@ phpunit.phar
 
 # dir for uploaded files
 /web/uploads
+# dir for cache asset files
+/web/assets
 
 tests/_output/*
 tests/_support/_generated
