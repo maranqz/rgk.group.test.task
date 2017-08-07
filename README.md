@@ -1,5 +1,11 @@
 # Тестовое задание, часть 1#
 
+Для инициализации стандартных пользователей команду yii init-users/up
+
+admin:123456, email: admin@admin.com, role: admin
+manager:123456, email: manager@manager.com, role: manager
+user:123456, email: user@user.com, role: user
+
 1. Регистрация и авторизация пользователей (можно использовать готовые модули/расширения) с подтверждением почтового ящика.
 
     Использовался готовый модуль yii2-user, для подтверждения была задан параметр enableConfirm

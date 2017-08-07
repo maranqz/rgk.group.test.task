@@ -29,6 +29,33 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
+    'modules' => [
+        //description User module https://github.com/dektrium/yii2-user/blob/master/docs/configuration.md
+        'user' => [
+            'class' => '\dektrium\user\Module',
+            //RBAC role for access to special admin pages yii2-user
+            'adminPermission' => 'admin',
+            //If this option is set to true, module sends email that contains a confirmation link that user must click to complete registration.
+            'enableConfirmation' => true,
+            'mailer' => [
+                'sender' => 'no-reply@myhost.com', // or ['no-reply@myhost.com' => 'Sender name']
+                'welcomeSubject' => 'Welcome subject',
+                'confirmationSubject' => 'Confirmation subject',
+                'reconfirmationSubject' => 'Email change subject',
+                'recoverySubject' => 'Recovery subject',
+            ],
+
+            'modelMap' => [
+                'User' => '\app\models\user\User',
+                'UserSearch' => '\app\models\user\UserSearch',
+                'Profile' => '\app\models\user\Profile',
+            ],
+            'controllerMap' => [
+                'registration' => '\app\controllers\user\RegistrationController',//::className(),
+                'admin' => '\app\controllers\user\AdminController'//::className(),
+            ],
+        ],
+    ],
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.

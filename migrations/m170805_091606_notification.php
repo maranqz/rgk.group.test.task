@@ -4,7 +4,7 @@ use yii\db\Migration;
 
 class m170805_091606_notification extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $this->createTable('{{%notification}}',[
             'id' => $this->primaryKey(),
@@ -16,9 +16,8 @@ class m170805_091606_notification extends Migration
         ]);
     }
 
-    public function down()
+    public function safeDown()
     {
         $this->dropTable('{{%notification}}');
-        return true;
     }
 }

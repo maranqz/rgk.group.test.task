@@ -57,9 +57,8 @@ class m170803_121808_post extends Migration
     }
 
 
-    public function down()
+    public function safeDown()
     {
         $this->dropTable('{{%post}}');
-        return true;
     }
 }

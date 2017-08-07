@@ -10,7 +10,7 @@ class RbacController extends Controller
 
     const USER_USER = 'user';
     const MANAGER_USER = 'manager';
-    const ADMIN_USER = 'maranqz';
+    const ADMIN_USER = 'admin';
 
     public function actionInit()
     {
